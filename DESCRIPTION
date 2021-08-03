@@ -1,0 +1,15 @@
+Package: RNAetc
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Author: Kim Dill-McFarland
+Maintainer: Kim Dill-McFarland <kadm@uw.edu>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Imports: dplyr, edgeR, forcats, ggplot2, limma, magrittr, readr, tibble, tidyr, WGCNA
+Depends: 
+    R (>= 2.10)
