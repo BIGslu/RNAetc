@@ -1,11 +1,10 @@
 Package: RNAetc
 Type: Package
-Title: What the Package Does (Title Case)
+Title: RNA-seq Data Cleaning
 Version: 0.1.0
 Author: Kim Dill-McFarland
 Maintainer: Kim Dill-McFarland <kadm@uw.edu>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: RNA-seq data cleaning of raw counts and metadata.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
