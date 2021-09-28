@@ -2,6 +2,7 @@
 
 export("%>%")
 export(align_metrics)
+export(clean_metrics)
 export(filter_rare)
 export(make_modules)
 importFrom(magrittr,"%>%")
