@@ -6,6 +6,7 @@
 #'
 #' @return Data frame with alignment quality metrics
 #' @export
+#'
 
 clean_metrics <- function(dir="data_raw/metrics/", flagstat=TRUE, picard=TRUE){
   LIBRARY<-READ_GROUP<-SAMPLE<-X1<-libID<-name<-value<-NULL
