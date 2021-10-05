@@ -4,7 +4,7 @@
 #'
 #' @param dat DGEList output by edgeR::DEGList( )
 #' @param min.CPM numeric minimum counts per million (CPM)
-#' @param gene.var character name for column with gene names in dat$genes that matches names in expression data dat$E. Default "geneName"
+#' @param gene.var character name for column with gene names in dat$genes that matches names in expression data dat$E. Default "ensembl_gene_id"
 #' @param min.sample numeric minimum number of samples
 #' @param min.pct numeric minimum percent of samples (0-100)
 #' @param plot logical if should plot mean variance trends
@@ -16,7 +16,7 @@
 #' dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.sample = 3)
 #' dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.pct = 10, plot = TRUE)
 
-filter_rare <- function(dat, min.CPM, gene.var="geneName",
+filter_rare <- function(dat, min.CPM, gene.var="ensembl_gene_id",
                         min.sample=NULL, min.pct=NULL, plot=FALSE){
   x <- y <- linex <- liney <- NULL
 
