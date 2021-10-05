@@ -54,7 +54,7 @@ filter_rare <- function(dat, min.CPM, gene.var="ensembl_gene_id",
   if(!is.null(dat.filter$genes)){
     #Gene name column in gene info table?
     if(!(gene.var %in% colnames(dat.filter$genes))){
-      stop("Gene name varible not present in gene info (dat$genes)") }
+      stop("Gene name variable not present in gene info (dat$genes)") }
 
     # Filter gene key
     dat.filter$genes <- dat.filter$genes[dat.filter$genes[,gene.var] %in% not.rare.genes,]
