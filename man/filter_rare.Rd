@@ -7,7 +7,7 @@
 filter_rare(
   dat,
   min.CPM,
-  gene.var = "geneName",
+  gene.var = "ensembl_gene_id",
   min.sample = NULL,
   min.pct = NULL,
   plot = FALSE
@@ -18,7 +18,7 @@ filter_rare(
 
 \item{min.CPM}{numeric minimum counts per million (CPM)}
 
-\item{gene.var}{character name for column with gene names in dat$genes that matches names in expression data dat$E. Default "geneName"}
+\item{gene.var}{character name for column with gene names in dat$genes that matches names in expression data dat$E. Default "ensembl_gene_id"}
 
 \item{min.sample}{numeric minimum number of samples}
 
@@ -33,6 +33,7 @@ DGEList object filtered to not rare genes
 Filter genes at a minimum counts per million (CPM) in a minmum number or percent of total samples.
 }
 \examples{
-dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.sample = 3)
-dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.pct = 10, plot = TRUE)
+dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.sample = 3, gene.var="geneName")
+dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.pct = 10,
+                          plot = TRUE, gene.var="geneName")
 }

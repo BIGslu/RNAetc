@@ -13,8 +13,9 @@
 #' @export
 #'
 #' @examples
-#' dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.sample = 3)
-#' dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.pct = 10, plot = TRUE)
+#' dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.sample = 3, gene.var="geneName")
+#' dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.pct = 10,
+#'                           plot = TRUE, gene.var="geneName")
 
 filter_rare <- function(dat, min.CPM, gene.var="ensembl_gene_id",
                         min.sample=NULL, min.pct=NULL, plot=FALSE){
