@@ -82,5 +82,13 @@ filter_rare <- function(dat, min.CPM, gene.var="ensembl_gene_id",
       ggplot2::labs(x="log2( count size + 0.5 )", y="Sqrt (stdev)")
     print(plot)
   }
+
+  ##### message #####
+  #calculate total genes and removed
+  tot.genes <- nrow(dat)
+  filter.tot <- tot.genes-length(not.rare.genes)
+  filter.perc <- round(filter.tot/tot.genes*100, digits=2)
+  message(paste0(filter.tot, " (", filter.perc,  "%) of ", tot.genes, " genes removed."))
+
   return(dat.filter)
 }
