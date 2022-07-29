@@ -5,27 +5,42 @@
 \title{Construct WGCNA modules and associated data}
 \usage{
 make_modules(
-  dat,
-  genes = NULL,
+  fit,
   Rsq.min = NULL,
   sft.value = NULL,
   minModuleSize = 20,
+  maxBlockSize = 500,
   deepSplit = 3,
+  networkType = "signed",
+  TOMType = "signed",
+  mods.mean = FALSE,
+  mods.eigen = FALSE,
+  david = FALSE,
   nThread = 2
 )
 }
 \arguments{
-\item{dat}{limma EList output by voom( )}
+\item{fit}{List object output by fit_modules( )}
 
-\item{genes}{Character vector of genes to used in module building. Must match rownames in dat. If not set, all genes in dat are used}
+\item{Rsq.min}{Numeric minimum R-squared for soft threshold selection. If set, sft.value is ignored}
 
-\item{Rsq.min}{Numeric minimum R-squared for soft threshold selection. If set, sft.value is not used}
+\item{sft.value}{Numeric soft threshold. Set when minimum R-squared is ignored}
 
-\item{sft.value}{Numeric soft threshold. Set when minimum R-squared is no used}
+\item{minModuleSize}{Numeric minimum module size. Default is 20}
 
-\item{minModuleSize}{Numeric minimum module size}
+\item{maxBlockSize}{Integer giving maximum block size for module detection. Default is 500}
 
 \item{deepSplit}{Integer value between 0 and 4. Provides a simplified control over how sensitive module detection should be to module splitting, with 0 least and 4 most sensitive}
+
+\item{networkType}{Character string. Network type. One of "unsigned", "signed", "signed hybrid". Default is "signed"}
+
+\item{TOMType}{Character string. One of "none", "unsigned", "signed", "signed Nowick", "unsigned 2", "signed 2", or "signed Nowick 2". If "none", adjacency will be used for clustering. See TOMsimilarityFromExpr for details. Default is "signed"}
+
+\item{mods.mean}{Logical if include mean module expression in output}
+
+\item{mods.eigen}{Logical if include eigenvalue module expression in output}
+
+\item{david}{Logical if include DAVID formatted genes in modules in output}
 
 \item{nThread}{Integer for number of threads to use}
 }
@@ -34,15 +49,17 @@ List including:
 \itemize{
   \item{genes} Character vector of genes used in module building
   \item{sft} Data frame with soft thresholding selected for module building. Includes power, minimum R-squared, and connectivity
-  \item{sft.plot} ggplot object of soft thresholding topology and connectivity
   \item{mods} Data frame of genes in modules
-  \item{mods.voom} Data frame of mean module expression in each library
+  \item{mods.mean} Data frame of mean module expression for each library
+  \item{mods.eigen} Data frame of module eigenvalue expression for each library
   \item{david} DAVID formatted data frame of genes in modules
 }
 }
 \description{
-Make WGCNA modules from gene expression data with dynamic soft threshold selection. Also outputs mean module expression and DAVID formatted gene lists
+Make WGCNA modules from gene expression data. Also outputs mean or eigenvalue module expression and DAVID formatted gene lists
 }
 \examples{
-dat.mods <- make_modules(dat = example.voom, sft.value = 1)
+fit <- fit_modules(dat = example.voom)
+dat.mods <- make_modules(fit = fit, sft.value = 14,
+    mods.mean = TRUE, mods.eigen = TRUE, david = TRUE)
 }
