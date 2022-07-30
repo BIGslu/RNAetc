@@ -10,7 +10,8 @@
 #' \itemize{
 #'   \item{genes} Character vector of genes used in module building
 #'   \item{sft} Data frame with soft thresholding results including R-squared, slope, and k metrics
-#'   \item{sft.plot} ggplot object of soft thresholding topology and connectivity
+#'   \item{top.plot} ggplot object of soft thresholding topology
+#'   \item{connect.plot} ggplot object of soft thresholding connectivity
 #' }
 #' @export
 #'
@@ -26,7 +27,7 @@ fit_modules <- function(dat, genes=NULL,
     stop("Gene names must be rownames or the first column of dat.")
   }
 
-  slope <- SFT.R.sq <- fit <- mean.k. <- Power <- value <- rowname <- NULL
+  slope <- SFT.R.sq <- fit <- mean.k. <- Power <- value <- rowname <- signed.R.sq <- NULL
 
   ##### Format expression data #####
   #Move rownames if present
@@ -60,21 +61,27 @@ fit_modules <- function(dat, genes=NULL,
                                   powerVector = powerVector,
                                   networkType = networkType,
                                   verbose=0)
-  sft.format <- as.data.frame(sft$fitIndices)
+  sft.format <- as.data.frame(sft$fitIndices) %>%
+    dplyr::mutate(signed.R.sq = -sign(slope)*SFT.R.sq)
 
   #Plot
-  sft.plot <- sft.format %>%
-    dplyr::mutate(fit = -sign(slope)*SFT.R.sq) %>%
-    tidyr::pivot_longer(c(fit,mean.k.), names_to = "name", values_to = "value") %>%
-
-    ggplot2::ggplot(ggplot2::aes(x=Power, y=value, label=Power)) +
+  minR <- round(min(sft.format$signed.R.sq), digits=1)
+  maxR <- round(max(sft.format$signed.R.sq), digits=1)
+  sft.plot1 <- sft.format %>%
+    ggplot2::ggplot(ggplot2::aes(x=Power, y=signed.R.sq, label=Power)) +
     ggplot2::geom_text(size=3) +
-    ggplot2::facet_wrap(~name, scales = "free_y",
-                        labeller=ggplot2::labeller(name=
-                                                     c(fit="Scale free topology model fit,\nsigned R^2",
-                                                       mean.k.="Mean connectivity"))) +
     ggplot2::theme_classic() +
-    ggplot2::labs(y="", x="Soft threshold (power)")
+    ggplot2::labs(y="Scale free topology model fit,signed R^2",
+                  x="Soft threshold (power)") +
+    ggplot2::scale_y_continuous(breaks =
+                                  round(seq(minR, maxR, by = 0.1), digits = 1))
+
+  sft.plot2 <- sft.format %>%
+    ggplot2::ggplot(ggplot2::aes(x=Power, y=mean.k., label=Power)) +
+    ggplot2::geom_text(size=3) +
+    ggplot2::theme_classic() +
+    ggplot2::labs(y="Mean connectivity",
+                  x="Soft threshold (power)")
 
   ##### Combine results into list #####
   #Put rownames back so works with make_modules
@@ -83,6 +90,7 @@ fit_modules <- function(dat, genes=NULL,
   fit_result[["dat"]] <- dat.signif
   fit_result[["genes"]] <- rownames(dat.signif$E)
   fit_result[["sft"]] <- sft.format
-  fit_result[["sft.plot"]] <- sft.plot
+  fit_result[["top.plot"]] <- sft.plot1
+  fit_result[["connect.plot"]] <- sft.plot2
   return(fit_result)
 }

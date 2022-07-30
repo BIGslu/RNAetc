@@ -28,7 +28,8 @@ List including:
 \itemize{
   \item{genes} Character vector of genes used in module building
   \item{sft} Data frame with soft thresholding results including R-squared, slope, and k metrics
-  \item{sft.plot} ggplot object of soft thresholding topology and connectivity
+  \item{top.plot} ggplot object of soft thresholding topology
+  \item{connect.plot} ggplot object of soft thresholding connectivity
 }
 }
 \description{

@@ -19,6 +19,8 @@
 #' \itemize{
 #'   \item{genes} Character vector of genes used in module building
 #'   \item{sft} Data frame with soft thresholding selected for module building. Includes power, minimum R-squared, and connectivity
+#'   \item{top.plot} ggplot object of soft thresholding topology
+#'   \item{connect.plot} ggplot object of soft thresholding connectivity
 #'   \item{mods} Data frame of genes in modules
 #'   \item{mods.mean} Data frame of mean module expression for each library
 #'   \item{mods.eigen} Data frame of module eigenvalue expression for each library
@@ -89,6 +91,14 @@ make_modules <- function(fit,
   dat.mods[["genes"]] <- fit$genes
   dat.mods[["mods"]] <- mods
   dat.mods[["sft"]] <- sft.select
+
+  ##### plot #####
+  dat.mods[["top.plot"]] <- fit$top.plot +
+    ggplot2::geom_hline(ggplot2::aes(yintercept = sft.select$SFT.R.sq[1]), color="red") +
+    ggplot2::geom_vline(xintercept = power.t, color="red")
+  dat.mods[["connect.plot"]] <- fit$connect.plot +
+    ggplot2::geom_hline(ggplot2::aes(yintercept = sft.select$mean.k.[1]), color="red") +
+    ggplot2::geom_vline(xintercept = power.t, color="red")
 
   ##### Mean module expression #####
   if(mods.mean){

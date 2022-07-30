@@ -49,6 +49,8 @@ List including:
 \itemize{
   \item{genes} Character vector of genes used in module building
   \item{sft} Data frame with soft thresholding selected for module building. Includes power, minimum R-squared, and connectivity
+  \item{top.plot} ggplot object of soft thresholding topology
+  \item{connect.plot} ggplot object of soft thresholding connectivity
   \item{mods} Data frame of genes in modules
   \item{mods.mean} Data frame of mean module expression for each library
   \item{mods.eigen} Data frame of module eigenvalue expression for each library
