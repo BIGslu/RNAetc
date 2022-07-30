@@ -19,8 +19,8 @@
 #' fit <- fit_modules(dat = example.voom)
 
 fit_modules <- function(dat, genes=NULL,
-                         powerVector=c(1:30), networkType = "signed",
-                         nThread=2){
+                        powerVector=c(1:30), networkType = "signed",
+                        nThread=2){
 
   ##### Check data format #####
   if(!is.numeric(dat$E) & is.numeric(dat$E[,1])){
