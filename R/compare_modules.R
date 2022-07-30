@@ -69,8 +69,7 @@ compare_modules <- function(fit,
   ##### Build modules #####
   compare.result <- data.frame()
   mod.ls <- list()
-  # for(i in 1:nrow(params)){
-  for(i in 1:2){
+  for(i in 1:nrow(params)){
     param.OI <- params[i,]
 
     ##### Build modules #####
