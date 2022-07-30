@@ -2,7 +2,9 @@
 
 export("%>%")
 export(clean_metrics)
+export(compare_modules)
 export(filter_rare)
+export(fit_modules)
 export(make_modules)
 export(read_fcounts)
 importFrom(magrittr,"%>%")
