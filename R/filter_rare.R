@@ -13,7 +13,8 @@
 #' @export
 #'
 #' @examples
-#' dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.sample = 3, gene.var="geneName")
+#' dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.sample = 3,
+#'                           gene.var="geneName")
 #' dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.pct = 10,
 #'                           plot = TRUE, gene.var="geneName")
 
@@ -23,7 +24,7 @@ filter_rare <- function(dat, min.CPM, gene.var="ensembl_gene_id",
 
   ##### Check parameters #####
   #Correct input object type?
-  if(class(dat) != "DGEList"){ stop("dat object must be a DGEList object") }
+  if(!isa(dat, "DGEList")){ stop("dat object must be a DGEList object from edgeR") }
   #Set at least one min sample param
   if(is.null(min.sample) & is.null(min.pct)){ stop("Please provide one of min.sample or min.pct") }
   #min samples or percent only?
