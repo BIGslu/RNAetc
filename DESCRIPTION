@@ -1,7 +1,7 @@
 Package: RNAetc
 Type: Package
 Title: RNA-seq Data Cleaning And Analysis
-Version: 0.2.0
+Version: 1.0.0
 Author: Kim Dill-McFarland
 Maintainer: Kim Dill-McFarland <kadm@uw.edu>
 Description: RNA-seq data cleaning of raw counts and metadata.
