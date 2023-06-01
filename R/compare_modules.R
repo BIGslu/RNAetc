@@ -3,8 +3,6 @@
 #' Make WGCNA modules from gene expression data with dynamic soft threshold selection. Also outputs mean module expression and DAVID formatted gene lists
 #'
 #' @param fit List object output by fit_modules( )
-#' @param Rsq.min Numeric vector minimum R-squared for soft threshold selection. If set, sft_value is ignored
-#' @param sft.value Integer vector soft threshold. Set when minimum R-squared is ignored
 #' @param Rsq_min Numeric vector minimum R-squared for soft threshold selection. If set, sft_value is ignored
 #' @param sft_value Integer vector soft threshold. Set when minimum R-squared is ignored
 #' @param minModuleSize Numeric vector minimum module size. Default is 20
@@ -14,6 +12,9 @@
 #' @param TOMType Character vector from "none", "unsigned", "signed", "signed Nowick", "unsigned 2", "signed 2", or "signed Nowick 2". If "none", adjacency will be used for clustering. See TOMsimilarityFromExpr for details. Default is "signed"
 #' @param nThread Integer for number of threads to use
 #'
+#' @param Rsq.min Deprecated form of Rsq_min
+#' @param sft.value Deprecated form of sft_value
+
 #' @return List including:
 #' \itemize{
 #'   \item{summary} Data frame with total modules and sizes for all builds
@@ -30,14 +31,11 @@ compare_modules <- function(fit,
                             minModuleSize = 20, maxBlockSize=500, deepSplit = 3,
                             networkType="signed", TOMType="signed",
                             nThread=2,
-                            Rsq.min = NULL, sft.value = NULL,){
+                            Rsq.min = NULL, sft.value = NULL){
   # Back compatibility
-  if(!is.null(Rsq.min)){
-    Rsq_min <- Rsq.min
-  }
-  if(!is.null(sft.value)){
-    sft_value <- sft.value
-  }
+  if(!is.null(Rsq.min)){ Rsq_min <- Rsq.min}
+  if(!is.null(sft.value)){ sft_value <- sft.value}
+
   ##### Check inputs #####
   if(!is.null(Rsq_min) & !is.null(sft_value)) {
     stop("Only one of Rsq_min or sft_value may be used.")

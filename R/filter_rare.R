@@ -3,46 +3,36 @@
 #' Filter genes at a minimum counts per million (CPM) in a minmum number or percent of total samples.
 #'
 #' @param dat DGEList output by edgeR::DEGList( )
-#' @param min.CPM numeric minimum counts per million (CPM)
-#' @param gene.var character name for column with gene names in dat$genes that matches names in expression data dat$E. Default "ensembl_gene_id"
-#' @param min.sample numeric minimum number of samples
-#' @param min.pct numeric minimum percent of samples (0-100)
-#' @param plot logical if should plot mean variance trends
-#'
 #' @param min_CPM numeric minimum counts per million (CPM)
 #' @param gene_var character name for column with gene names in dat$genes that matches names in expression data dat$E. Default "ensembl_gene_id"
 #' @param min_sample numeric minimum number of samples
 #' @param min_pct numeric minimum percent of samples (0-100)
+#' @param plot logical if should plot mean variance trends
 #'
+#' @param min.CPM Deprecated form of min_CPM
+#' @param gene.var Deprecated form of gene_var
+#' @param min.sample Deprecated form of min_sample
+#' @param min.pct Deprecated form of min_pct
 #'
 #' @return DGEList object filtered to not rare genes
 #' @export
 #'
 #' @examples
-#' dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.sample = 3,
-#'                           gene.var="geneName")
-#' dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.pct = 10,
-#'                           plot = TRUE, gene.var="geneName")
+#' dat.filter <- filter_rare(dat = example.dat, min_CPM = 0.1, min_sample = 3,
+#'                           gene_var="geneName")
+#' dat.filter <- filter_rare(dat = example.dat, min_CPM = 0.1, min_pct = 10,
+#'                           plot = TRUE, gene_var="geneName")
 
-filter_rare <- function(dat, min.CPM, gene.var="ensembl_gene_id",
-                        min.sample=NULL, min.pct=NULL, plot=FALSE,
-                        min_CPM, gene_var="ensembl_gene_id",
-                        min_sample=NULL, min_pct=NULL){
-  # BAck compatibilty
-  if(!is.null(min.CPM)){
-    min_CPM <- min.CPM
-  }
-  if(!is.null(min.sample)){
-    min_sample <- min.sample
-  }
-  if(!is.null(min.pct)){
-    min_pct <- min.pct
-  }
-  if(!is.null(gene.var)){
-    gene_var <- gene.var
-  }
-
-
+filter_rare <- function(dat, min_CPM, gene_var="ensembl_gene_id",
+                        min_sample=NULL, min_pct=NULL, plot=FALSE,
+                        #Deprecated
+                        min.CPM=NULL, gene.var=NULL,
+                        min.sample=NULL, min.pct=NULL){
+  # BAck compatibility
+  if(!is.null(min.CPM)){min_CPM <- min.CPM}
+  if(!is.null(min.sample)){min_sample <- min.sample}
+  if(!is.null(min.pct)){min_pct <- min.pct}
+  if(!is.null(gene.var)){gene_var <- gene.var}
 
   x <- y <- linex <- liney <- NULL
 
