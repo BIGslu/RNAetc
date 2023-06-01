@@ -6,22 +6,24 @@
 \usage{
 compare_modules(
   fit,
-  Rsq.min = NULL,
-  sft.value = NULL,
+  Rsq_min = NULL,
+  sft_value = NULL,
   minModuleSize = 20,
   maxBlockSize = 500,
   deepSplit = 3,
   networkType = "signed",
   TOMType = "signed",
-  nThread = 2
+  nThread = 2,
+  Rsq.min = NULL,
+  sft.value = NULL
 )
 }
 \arguments{
 \item{fit}{List object output by fit_modules( )}
 
-\item{Rsq.min}{Numeric vector minimum R-squared for soft threshold selection. If set, sft.value is ignored}
+\item{Rsq_min}{Numeric vector minimum R-squared for soft threshold selection. If set, sft_value is ignored}
 
-\item{sft.value}{Integer vector soft threshold. Set when minimum R-squared is ignored}
+\item{sft_value}{Integer vector soft threshold. Set when minimum R-squared is ignored}
 
 \item{minModuleSize}{Numeric vector minimum module size. Default is 20}
 
@@ -34,6 +36,10 @@ compare_modules(
 \item{TOMType}{Character vector from "none", "unsigned", "signed", "signed Nowick", "unsigned 2", "signed 2", or "signed Nowick 2". If "none", adjacency will be used for clustering. See TOMsimilarityFromExpr for details. Default is "signed"}
 
 \item{nThread}{Integer for number of threads to use}
+
+\item{Rsq.min}{Deprecated form of Rsq_min}
+
+\item{sft.value}{Deprecated form of sft_value}
 }
 \value{
 List including:
@@ -47,5 +53,5 @@ Make WGCNA modules from gene expression data with dynamic soft threshold selecti
 }
 \examples{
 fit <- fit_modules(dat = example.voom)
-compare.mods <- compare_modules(fit = fit, sft.value = c(14, 20))
+compare.mods <- compare_modules(fit = fit, sft_value = c(14, 20))
 }
