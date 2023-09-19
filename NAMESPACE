@@ -2,6 +2,7 @@
 
 export("%>%")
 export(clean_metrics)
+export(combine_voom)
 export(compare_modules)
 export(filter_rare)
 export(fit_modules)
