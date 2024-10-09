@@ -46,4 +46,11 @@ subset_voom <- function(dat_voom, lib_filter = NULL, gene_filter=NULL){ # add li
     # warning that your list is nonsense
   }
 
+  dat_voom_sub$targets <- dat_voom$targets[libs_sub,]
+  dat_voom_sub$genes <- dat_voom$genes[genes_sub,]
+  dat_voom_sub$E <- dat_voom$E[genes_sub,libs_sub]
+  dat_voom_sub$weights <- dat_voom$weights[genes_sub,libs_sub]
+  dat_voom_sub$design <- dat_voom$design[libs_sub,]
+
+  return(dat_voom_sub)
 }
