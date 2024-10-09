@@ -1,12 +1,24 @@
-
-get_lib_list <- function(dat_voom_sub,lib_filter,libraryID="libID"){
-  print(libraryID)
-  libs <- dat_voom_sub$targets %>%
-    filter(!!rlang::parse_expr(lib_filter)) %>%
-    pull(!!libraryID)
-  return(libs)
-}
-
+#' Subset voom object
+#'
+#' @param dat_voom Voom object to subset
+#' @param lib_keep vector of library IDs to keep (Default NULL)
+#' @param lib_remove vector of library IDs to remove (Default NULL)
+#' @param lib_filter string to use for filtering libraries to keep (Default NULL)
+#' @param gene_keep vector of genes to keep (Default NULL)
+#' @param libraryID name of the column with library IDs (Default "libID")
+#'
+#' @return voom object
+#' @export
+#'
+#' @examples
+#' dat.voom <- kimma::example.voom
+#'
+#' subset_voom(dat.voom,lib_keep = c("lib1","lib2"))
+#' subset_voom(dat.voom,lib_remove = c("lib1","lib2"))
+#' subset_voom(dat.voom,lib_filter = "asthma == 'healthy' & virus == 'none'")
+#' subset_voom(dat.voom,gene_keep = c("ENSG00000000460", "ENSG00000001460"))
+#' subset_voom(dat.voom,lib_keep = c("lib1","lib2"),
+#'   gene_keep = c("ENSG00000000460", "ENSG00000001460"))
 subset_voom <- function(dat_voom, lib_keep = NULL, lib_remove = NULL, lib_filter = NULL, gene_keep=NULL, libraryID = "libID"){ # add library ID column in targets?
   ### Checks
   # check which library filter parameters are NULL, only want either one or none to be specified
@@ -37,13 +49,15 @@ subset_voom <- function(dat_voom, lib_keep = NULL, lib_remove = NULL, lib_filter
     }
   } else if(!is.null(lib_remove)){
     if(all(lib_remove %in% colnames(dat_voom_sub$E))){
-      libs_sub <- colnames(dat.voom$E)[!(colnames(dat.voom$E) %in% lib_remove)] # all libraries minus the ones to remove (if they exist in the voom object)
+      libs_sub <- colnames(dat_voom_sub$E)[!(colnames(dat_voom_sub$E) %in% lib_remove)] # all libraries minus the ones to remove (if they exist in the voom object)
     } else{
       missing <- lib_remove[!(lib_remove %in% colnames(dat_voom_sub$E))]
       stop("I didn't find ",length(missing)," of the libraries you want to remove in the voom object: ",paste0(missing,collapse = ", "))
     }
   } else if(!is.null(lib_filter)){
-    libs_sub <- get_lib_list(dat_voom_sub,lib_filter,libraryID)
+    libs_sub <- dat_voom_sub$targets %>%
+      dplyr::filter(!!rlang::parse_expr(lib_filter)) %>%
+      dplyr::pull(!!libraryID)
     if(length(libs_sub) == 0){
       stop("Your filter statement didn't find any libraries matching the criteria, double check your statement")
     }
