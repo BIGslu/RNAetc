@@ -14,7 +14,13 @@ data$design
 
 # example filter: "virus == 'none' & asthma == 'healthy'"
 
-subset_voom <- function(dat_voom, lib_filter = NULL, gene_filter=NULL){ # add library ID column in targets?
+subset_voom <- function(dat_voom, lib_keep = NULL, lib_remove = NULL, lib_filter = NULL, gene_keep=NULL, libraryID = "libID"){ # add library ID column in targets?
+  ### Checks
+  # check which library filter parameters are NULL, only want either one or none to be specified
+  if(sum(is.null(lib_keep),is.null(lib_remove),is.null(lib_filter)) <= 1){
+    stop("You specified more than one way to filter libraries, please only specify either lib_keep, lib_remove, or lib_filter")
+  }
+
 
   #create subset object
   dat_voom_sub<-dat_voom
