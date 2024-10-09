@@ -1,18 +1,3 @@
-data <- kimma::example.voom
-
-data$targets
-data$genes
-data$E
-data$weights
-data$design
-
-
-# name weights columns
-# 1. identify libraries
-# provide name of column and list of levels
-# alternative to subset by genes
-
-# example filter: "virus == 'none' & asthma == 'healthy'"
 
 get_lib_list <- function(dat_voom_sub,lib_filter,libraryID="libID"){
   print(libraryID)
