@@ -67,12 +67,11 @@ subset_voom <- function(dat_voom, lib_keep = NULL, lib_remove = NULL, lib_filter
   # identify genes to keep
   if(is.null(gene_keep)){
     genes_sub <- rownames(dat_voom_sub$E) # all genes if no sublist provided
-  } else if(any(gene_keep %in% rownames(dat_voom_sub$E))){
-    genes_sub <- intersect(gene_keep, rownames(dat_voom_sub$E)) # add warning for if not ALL gene names from input in voom
-
-    # if we want to include HGNC symbols, think about how to do that
+  } else if(all(gene_keep %in% rownames(dat_voom_sub$E))){
+    genes_sub <- gene_keep # just the listed libraries (if they exist in the voom object)
   } else{
-    # warning that your list is nonsense
+    missing <- gene_keep[!(gene_keep %in% rownames(dat_voom_sub$E))]
+    stop("I didn't find ",length(missing)," of the genes you want to keep in the voom object: ",paste0(missing,collapse = ", "))
   }
 
   #print message for user to see how many libraries and genes are being included in subset
