@@ -46,11 +46,17 @@ subset_voom <- function(dat_voom, lib_filter = NULL, gene_filter=NULL){ # add li
     # warning that your list is nonsense
   }
 
+  #print message for user to see how many libraries and genes are being included in subset
+  message(paste0("Subsetting to ",length(libs_sub)," of ",ncol(dat_voom$E)," libraries"))
+  message(paste0("Subsetting to ",length(genes_sub)," of ",nrow(dat_voom$E)," genes"))
+
   dat_voom_sub$targets <- dat_voom$targets[libs_sub,]
   dat_voom_sub$genes <- dat_voom$genes[genes_sub,]
   dat_voom_sub$E <- dat_voom$E[genes_sub,libs_sub]
   dat_voom_sub$weights <- dat_voom$weights[genes_sub,libs_sub]
   dat_voom_sub$design <- dat_voom$design[libs_sub,]
+
+  message("Done!")
 
   return(dat_voom_sub)
 }
