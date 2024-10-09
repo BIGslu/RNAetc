@@ -8,8 +8,11 @@ Description: RNA-seq data cleaning of raw counts and metadata.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 biocViews:
-Imports: dplyr, edgeR, forcats, ggplot2, limma, magrittr, readr, tibble, tidyr, WGCNA
+Imports: dplyr, edgeR, forcats, ggplot2, limma, magrittr, readr, tibble, tidyr, WGCNA, rlang
+Remotes: BIGslu/kimma
+Suggests:
+  kimma
 Depends: 
     R (>= 2.10)
