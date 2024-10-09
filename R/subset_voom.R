@@ -14,9 +14,12 @@ data$design
 
 # example filter: "virus == 'none' & asthma == 'healthy'"
 
-get_lib_list <- function(dat_voom_sub,lib_filter){
-  dat_voom_sub$targets %>%
-    filter(!!enquo(lib_filter))
+get_lib_list <- function(dat_voom_sub,lib_filter,libraryID="libID"){
+  print(libraryID)
+  libs <- dat_voom_sub$targets %>%
+    filter(!!rlang::parse_expr(lib_filter)) %>%
+    pull(!!libraryID)
+  return(libs)
 }
 
 subset_voom <- function(dat_voom, lib_keep = NULL, lib_remove = NULL, lib_filter = NULL, gene_keep=NULL, libraryID = "libID"){ # add library ID column in targets?
@@ -55,10 +58,13 @@ subset_voom <- function(dat_voom, lib_keep = NULL, lib_remove = NULL, lib_filter
       stop("I didn't find ",length(missing)," of the libraries you want to remove in the voom object: ",paste0(missing,collapse = ", "))
     }
   } else if(!is.null(lib_filter)){
-    libs_sub <- get_lib_list(dat_voom_sub,lib_filter)
+    libs_sub <- get_lib_list(dat_voom_sub,lib_filter,libraryID)
+    if(length(libs_sub) == 0){
+      stop("Your filter statement didn't find any libraries matching the criteria, double check your statement")
+    }
   }
-  print(paste0("libs_sub: ",paste(libs_sub,collapse = ", ")))
 
+  # identify genes to keep
   if(is.null(gene_keep)){
     genes_sub <- rownames(dat_voom_sub$E) # all genes if no sublist provided
   } else if(any(gene_keep %in% rownames(dat_voom_sub$E))){
