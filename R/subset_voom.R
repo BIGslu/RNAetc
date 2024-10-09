@@ -40,7 +40,7 @@ subset_voom <- function(dat_voom, lib_filter = NULL, gene_filter=NULL){ # add li
   if(is.null(gene_filter)){
     genes_sub <- rownames(dat_voom_sub$E) # all genes if no sublist provided
   } else if(any(gene_filter %in% rownames(dat_voom_sub$E))){
-    genes_sub <- intersect(genes_filter, rownames(dat_voom_sub$E)) # add warning for if not ALL gene names from input in voom
+    genes_sub <- intersect(gene_filter, rownames(dat_voom_sub$E)) # add warning for if not ALL gene names from input in voom
 
     # if we want to include HGNC symbols, think about how to do that
   } else{
