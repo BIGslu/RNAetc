@@ -17,13 +17,16 @@ data$design
 subset_voom <- function(dat_voom, lib_filter = NULL, gene_filter=NULL){ # add library ID column in targets?
 
   dat_voom_sub<-dat_voom
+
   # Add gene & sample ID's to weights matrix
-  # NOTE: may want to add checks for dims
+  # first check dims are same
+  if(!identical(dim(dat_voom$E),dim(dat_voom$weights))){
+    stop("The expression matrix and weights matrix in your voom object have different dimensions...")
+  }
   rownames(dat_voom_sub$weights)<-rownames(dat_voom$E)
   colnames(dat_voom_sub$weights)<-colnames(dat_voom$E)
 
   #identify libraries to subset to
-
   if(is.null(lib_filter)){
     libs_sub <- colnames(dat_voom_sub$E) # all libraries if no sublist provided
   } else if(any(lib_filter %in% colnames(dat_voom_sub$E))){
