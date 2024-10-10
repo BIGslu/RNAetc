@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' dat.voom <- kimma::example.voom
+#' dat.voom <- RNAetc::example.voom
 #'
 #' subset_voom(dat.voom, lib_keep = c("lib1","lib2"))
 #' subset_voom(dat.voom, lib_remove = c("lib1","lib2"))
@@ -35,11 +35,13 @@ subset_voom <- function(dat,
 
   # Add gene & sample ID's to weights matrix
   # first check dims are same
-  if(!identical(dim(dat$E),dim(dat$weights))){
-    stop("The expression matrix and weights matrix in your voom object have different dimensions...")
+  if(!is.null(dat$weights)){
+    if(!identical(dim(dat$E),dim(dat$weights))){
+      stop("The expression matrix and weights matrix in your voom object have different dimensions...")
+    }
+    rownames(dat_voom_sub$weights)<-rownames(dat$E)
+    colnames(dat_voom_sub$weights)<-colnames(dat$E)
   }
-  rownames(dat_voom_sub$weights)<-rownames(dat$E)
-  colnames(dat_voom_sub$weights)<-colnames(dat$E)
 
   #identify libraries to subset to:
   if(is.null(lib_keep) & is.null(lib_remove) & is.null(lib_filter)){
@@ -84,8 +86,8 @@ subset_voom <- function(dat,
   dat_voom_sub$targets <- dat_voom_sub$targets[libs_sub,]
   dat_voom_sub$genes <- dat_voom_sub$genes[genes_sub,]
   dat_voom_sub$E <- dat_voom_sub$E[genes_sub,libs_sub]
-  dat_voom_sub$weights <- dat_voom_sub$weights[genes_sub,libs_sub]
-  dat_voom_sub$design <- dat_voom_sub$design[libs_sub,]
+  if(!is.null(dat$weights)){ dat_voom_sub$weights <- dat_voom_sub$weights[genes_sub,libs_sub] }
+  if(!is.null(dat$design)){ dat_voom_sub$design <- dat_voom_sub$design[libs_sub,] }
 
   message("Done!")
 

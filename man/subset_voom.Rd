@@ -33,7 +33,7 @@ limma EList object
 Subset voom object
 }
 \examples{
-dat.voom <- kimma::example.voom
+dat.voom <- RNAetc::example.voom
 
 subset_voom(dat.voom, lib_keep = c("lib1","lib2"))
 subset_voom(dat.voom, lib_remove = c("lib1","lib2"))
