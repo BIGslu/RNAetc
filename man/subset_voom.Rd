@@ -35,10 +35,10 @@ Subset voom object
 \examples{
 dat.voom <- kimma::example.voom
 
-subset_voom(dat.voom,lib_keep = c("lib1","lib2"))
-subset_voom(dat.voom,lib_remove = c("lib1","lib2"))
-subset_voom(dat.voom,lib_filter = "asthma == 'healthy' & virus == 'none'")
-subset_voom(dat.voom,gene_keep = c("ENSG00000000460", "ENSG00000001460"))
-subset_voom(dat.voom,lib_keep = c("lib1","lib2"),
-  gene_keep = c("ENSG00000000460", "ENSG00000001460"))
+subset_voom(dat.voom, lib_keep = c("lib1","lib2"))
+subset_voom(dat.voom, lib_remove = c("lib1","lib2"))
+subset_voom(dat.voom, lib_filter = "asthma == 'healthy' & virus == 'none'")
+subset_voom(dat.voom, gene_keep = c("ENSG00000000460", "ENSG00000001460"))
+subset_voom(dat.voom, lib_keep = c("lib1","lib2"),
+           gene_keep = c("ENSG00000000460", "ENSG00000001460"))
 }

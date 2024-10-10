@@ -13,13 +13,17 @@
 #' @examples
 #' dat.voom <- kimma::example.voom
 #'
-#' subset_voom(dat.voom,lib_keep = c("lib1","lib2"))
-#' subset_voom(dat.voom,lib_remove = c("lib1","lib2"))
-#' subset_voom(dat.voom,lib_filter = "asthma == 'healthy' & virus == 'none'")
-#' subset_voom(dat.voom,gene_keep = c("ENSG00000000460", "ENSG00000001460"))
-#' subset_voom(dat.voom,lib_keep = c("lib1","lib2"),
-#'   gene_keep = c("ENSG00000000460", "ENSG00000001460"))
-subset_voom <- function(dat_voom, lib_keep = NULL, lib_remove = NULL, lib_filter = NULL, gene_keep=NULL, libraryID = "libID"){ # add library ID column in targets?
+#' subset_voom(dat.voom, lib_keep = c("lib1","lib2"))
+#' subset_voom(dat.voom, lib_remove = c("lib1","lib2"))
+#' subset_voom(dat.voom, lib_filter = "asthma == 'healthy' & virus == 'none'")
+#' subset_voom(dat.voom, gene_keep = c("ENSG00000000460", "ENSG00000001460"))
+#' subset_voom(dat.voom, lib_keep = c("lib1","lib2"),
+#'            gene_keep = c("ENSG00000000460", "ENSG00000001460"))
+
+subset_voom <- function(dat,
+                        lib_keep = NULL, lib_remove = NULL, lib_filter = NULL,
+                        gene_keep=NULL,
+                        libraryID = "libID"){ # add library ID column in targets?
   ### Checks
   # check which library filter parameters are NULL, only want either one or none to be specified
   if(sum(is.null(lib_keep),is.null(lib_remove),is.null(lib_filter)) <= 1){
