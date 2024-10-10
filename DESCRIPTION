@@ -9,10 +9,21 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
+Imports: 
+  dplyr, 
+  edgeR, 
+  forcats, 
+  ggplot2, 
+  limma, 
+  magrittr, 
+  readr, 
+  tibble, 
+  tidyr, 
+  WGCNA, 
+  rlang
 biocViews:
-Imports: dplyr, edgeR, forcats, ggplot2, limma, magrittr, readr, tibble, tidyr, WGCNA, rlang
 Remotes: BIGslu/kimma
 Suggests:
   kimma
 Depends: 
-    R (>= 2.10)
+    R (>= 4.4)
