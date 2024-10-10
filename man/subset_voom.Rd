@@ -16,15 +16,15 @@ subset_voom(
 \arguments{
 \item{dat_voom}{Voom object to subset}
 
-\item{lib_keep}{vector of library IDs to keep (Default NULL)}
+\item{lib_keep}{Character vector of library IDs to keep (Default NULL)}
 
-\item{lib_remove}{vector of library IDs to remove (Default NULL)}
+\item{lib_remove}{Character vector of library IDs to remove (Default NULL)}
 
-\item{lib_filter}{string to use for filtering libraries to keep (Default NULL)}
+\item{lib_filter}{Character string to use for filtering libraries to keep (Default NULL)}
 
-\item{gene_keep}{vector of genes to keep (Default NULL)}
+\item{gene_keep}{Character vector of genes to keep (Default NULL)}
 
-\item{libraryID}{name of the column with library IDs (Default "libID")}
+\item{libraryID}{Character string specifying the name of the column with library IDs (Default "libID")}
 }
 \value{
 voom object

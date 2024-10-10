@@ -1,11 +1,11 @@
 #' Subset voom object
 #'
 #' @param dat_voom Voom object to subset
-#' @param lib_keep vector of library IDs to keep (Default NULL)
-#' @param lib_remove vector of library IDs to remove (Default NULL)
-#' @param lib_filter string to use for filtering libraries to keep (Default NULL)
-#' @param gene_keep vector of genes to keep (Default NULL)
-#' @param libraryID name of the column with library IDs (Default "libID")
+#' @param lib_keep Character vector of library IDs to keep (Default NULL)
+#' @param lib_remove Character vector of library IDs to remove (Default NULL)
+#' @param lib_filter Character string to use for filtering libraries to keep (Default NULL)
+#' @param gene_keep Character vector of genes to keep (Default NULL)
+#' @param libraryID Character string specifying the name of the column with library IDs (Default "libID")
 #'
 #' @return voom object
 #' @export
