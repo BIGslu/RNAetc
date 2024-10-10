@@ -15,15 +15,18 @@
 collapse_voom <- function(dat,
                           libraryID = "libID", geneID = "geneName",
                           include_weights = FALSE){
+  # Combine R and targets
   combined <- as.data.frame(dat$E) %>%
     tibble::rownames_to_column(geneID) %>%
     tidyr::pivot_longer(-geneID, names_to = libraryID) %>%
     dplyr::left_join(dat$targets, by=libraryID)
 
+  # Add genes if available
   if(!is.null(dat$genes)){
     combined <- dplyr::left_join(combined, dat$genes, by=geneID)
   }
 
+  #Add weights if desired
   if(include_weights){
     colnames(dat$weights) <- colnames(dat$E)
     rownames(dat$weights) <- rownames(dat$E)
