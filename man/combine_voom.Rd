@@ -2,23 +2,28 @@
 % Please edit documentation in R/combine_voom.R
 \name{combine_voom}
 \alias{combine_voom}
-\title{Combine data frame elements of a voom object}
+\title{Combine 2 voom objects into 1}
 \usage{
-combine_voom(dat, libraryID = "libID", geneID = "geneName")
+combine_voom(dat1, dat2, libraryID = "libID")
 }
 \arguments{
-\item{dat}{EList voom object resulting from voom() or voomWithQualityWeights()}
+\item{dat1}{EList voom object resulting from voom() or voomWithQualityWeights()}
+
+\item{dat2}{EList voom object resulting from voom() or voomWithQualityWeights()}
 
 \item{libraryID}{Character. Column name in dat$targets that matches column names in dat$E}
-
-\item{geneID}{Character. Column name in dat$genes that matches row names in dat$E}
 }
 \value{
 data frame
 }
 \description{
-Combine data frame elements of a voom object
+Combine 2 voom objects into 1
 }
 \examples{
-combined <- combine_voom(example.voom)
+example.voom <- example.voom
+example.voom$design <- NULL
+dat1 <- subset_voom(example.voom, lib_filter="virus=='none'")
+dat2 <- subset_voom(example.voom,
+               lib_keep=c("lib1","lib2","lib4","lib6","lib8","lib10","lib12"))
+combined <- combine_voom(dat1, dat2)
 }
