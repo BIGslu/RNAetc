@@ -1,13 +1,13 @@
 #' Subset voom object
 #'
-#' @param dat_voom Voom object to subset
+#' @param dat limma EList object to subset
 #' @param lib_keep Character vector of library IDs to keep (Default NULL)
 #' @param lib_remove Character vector of library IDs to remove (Default NULL)
 #' @param lib_filter Character string to use for filtering libraries to keep (Default NULL)
 #' @param gene_keep Character vector of genes to keep (Default NULL)
 #' @param libraryID Character string specifying the name of the column with library IDs (Default "libID")
 #'
-#' @return voom object
+#' @return limma EList object
 #' @export
 #'
 #' @examples
@@ -27,15 +27,15 @@ subset_voom <- function(dat_voom, lib_keep = NULL, lib_remove = NULL, lib_filter
   }
 
   #create subset object
-  dat_voom_sub<-dat_voom
+  dat_voom_sub<-dat
 
   # Add gene & sample ID's to weights matrix
   # first check dims are same
-  if(!identical(dim(dat_voom$E),dim(dat_voom$weights))){
+  if(!identical(dim(dat$E),dim(dat$weights))){
     stop("The expression matrix and weights matrix in your voom object have different dimensions...")
   }
-  rownames(dat_voom_sub$weights)<-rownames(dat_voom$E)
-  colnames(dat_voom_sub$weights)<-colnames(dat_voom$E)
+  rownames(dat_voom_sub$weights)<-rownames(dat$E)
+  colnames(dat_voom_sub$weights)<-colnames(dat$E)
 
   #identify libraries to subset to:
   if(is.null(lib_keep) & is.null(lib_remove) & is.null(lib_filter)){
@@ -74,8 +74,8 @@ subset_voom <- function(dat_voom, lib_keep = NULL, lib_remove = NULL, lib_filter
   }
 
   #print message for user to see how many libraries and genes are being included in subset
-  message(paste0("Subsetting to ",length(libs_sub)," of ",ncol(dat_voom$E)," libraries"))
-  message(paste0("Subsetting to ",length(genes_sub)," of ",nrow(dat_voom$E)," genes"))
+  message(paste0("Subsetting to ",length(libs_sub)," of ",ncol(dat$E)," libraries"))
+  message(paste0("Subsetting to ",length(genes_sub)," of ",nrow(dat$E)," genes"))
 
   dat_voom_sub$targets <- dat_voom_sub$targets[libs_sub,]
   dat_voom_sub$genes <- dat_voom_sub$genes[genes_sub,]

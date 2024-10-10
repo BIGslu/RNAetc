@@ -5,7 +5,7 @@
 \title{Subset voom object}
 \usage{
 subset_voom(
-  dat_voom,
+  dat,
   lib_keep = NULL,
   lib_remove = NULL,
   lib_filter = NULL,
@@ -14,7 +14,7 @@ subset_voom(
 )
 }
 \arguments{
-\item{dat_voom}{Voom object to subset}
+\item{dat}{limma EList object to subset}
 
 \item{lib_keep}{Character vector of library IDs to keep (Default NULL)}
 
@@ -27,7 +27,7 @@ subset_voom(
 \item{libraryID}{Character string specifying the name of the column with library IDs (Default "libID")}
 }
 \value{
-voom object
+limma EList object
 }
 \description{
 Subset voom object
