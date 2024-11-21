@@ -10,7 +10,11 @@ filter_rare(
   gene.var = "ensembl_gene_id",
   min.sample = NULL,
   min.pct = NULL,
-  plot = FALSE
+  plot = FALSE,
+  min_CPM,
+  gene_var = "ensembl_gene_id",
+  min_sample = NULL,
+  min_pct = NULL
 )
 }
 \arguments{
@@ -25,6 +29,14 @@ filter_rare(
 \item{min.pct}{numeric minimum percent of samples (0-100)}
 
 \item{plot}{logical if should plot mean variance trends}
+
+\item{min_CPM}{numeric minimum counts per million (CPM)}
+
+\item{gene_var}{character name for column with gene names in dat$genes that matches names in expression data dat$E. Default "ensembl_gene_id"}
+
+\item{min_sample}{numeric minimum number of samples}
+
+\item{min_pct}{numeric minimum percent of samples (0-100)}
 }
 \value{
 DGEList object filtered to not rare genes
