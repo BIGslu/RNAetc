@@ -30,7 +30,7 @@ compare_modules <- function(fit,
                             minModuleSize = 20, maxBlockSize=500, deepSplit = 3,
                             networkType="signed", TOMType="signed",
                             nThread=2,
-                            Rsq.min = NULL, sft.value = NULL,){
+                            Rsq.min = NULL, sft.value = NULL){
   # Back compatibility
   if(!is.null(Rsq.min)){
     Rsq_min <- Rsq.min
