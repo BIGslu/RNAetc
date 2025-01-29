@@ -1,7 +1,7 @@
 Package: RNAetc
 Type: Package
 Title: RNA-seq Data Cleaning And Analysis
-Version: 1.0.0
+Version: 1.2.0
 Author: Kim Dill-McFarland
 Maintainer: Kim Dill-McFarland <kadm@uw.edu>
 Description: RNA-seq data cleaning of raw counts and metadata.
@@ -9,18 +9,22 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
-biocViews:
 Imports: 
-    dplyr,
-    edgeR,
-    forcats,
-    ggplot2,
-    gtools,
-    limma,
-    magrittr,
-    readr,
-    tibble,
-    tidyr,
-    WGCNA
+  dplyr, 
+  edgeR, 
+  forcats, 
+  ggplot2, 
+  gtools,
+  limma, 
+  magrittr, 
+  readr, 
+  tibble, 
+  tidyr, 
+  WGCNA, 
+  rlang
+biocViews:
+Remotes: BIGslu/kimma
+Suggests:
+  kimma
 Depends: 
-    R (>= 2.10)
+    R (>= 4.4)

@@ -3,19 +3,23 @@
 #' Make WGCNA modules from gene expression data. Also outputs mean or eigenvalue module expression and DAVID formatted gene lists
 #'
 #' @param fit List object output by fit_modules( )
-#' @param Rsq.min Numeric minimum R-squared for soft threshold selection. If set, sft.value is ignored
-#' @param sft.value Numeric soft threshold. Set when minimum R-squared is ignored
+#' @param Rsq_min Numeric minimum R-squared for soft threshold selection. If set, sft_value is ignored
+#' @param sft_value Numeric soft threshold. Set when minimum R-squared is ignored
 #' @param minModuleSize Numeric minimum module size. Default is 20
 #' @param maxBlockSize Integer giving maximum block size for module detection. Default is 500
 #' @param deepSplit Integer value between 0 and 4. Provides a simplified control over how sensitive module detection should be to module splitting, with 0 least and 4 most sensitive
 #' @param networkType Character string. Network type. One of "unsigned", "signed", "signed hybrid". Default is "signed"
 #' @param TOMType Character string. One of "none", "unsigned", "signed", "signed Nowick", "unsigned 2", "signed 2", or "signed Nowick 2". If "none", adjacency will be used for clustering. See TOMsimilarityFromExpr for details. Default is "signed"
-#' @param mods.mean Logical if include mean module expression in output
-#' @param mods.eigen Logical if include eigenvalue module expression in output
+#' @param mods_mean Logical if include mean module expression in output
+#' @param mods_eigen Logical if include eigenvalue module expression in output
 #' @param david Logical if include DAVID formatted genes in modules in output
 #' @param nThread Integer for number of threads to use
 #'
-#' @return List including:
+#' @param Rsq.min Deprecated form of Rsq_min
+#' @param sft.value Deprecated form of sft_value
+#' @param mods.mean Deprecated form of mods_mean
+#' @param mods.eigen Deprecated form of mods_eigen
+#'
 #' \itemize{
 #'   \item{genes} Character vector of genes used in module building
 #'   \item{sft} Data frame with soft thresholding selected for module building. Includes power, minimum R-squared, and connectivity
@@ -30,30 +34,39 @@
 #'
 #' @examples
 #' fit <- fit_modules(dat = example.voom)
-#' dat.mods <- make_modules(fit = fit, sft.value = 14,
-#'     mods.mean = TRUE, mods.eigen = TRUE, david = TRUE)
+#' dat.mods <- make_modules(fit = fit, sft_value = 14,
+#'     mods_mean = TRUE, mods_eigen = TRUE, david = TRUE)
 
 make_modules <- function(fit,
-                         Rsq.min = NULL, sft.value = NULL,
+                         Rsq_min = NULL, sft_value = NULL,
                          minModuleSize = 20, maxBlockSize=500, deepSplit = 3,
                          networkType="signed", TOMType="signed",
-                         mods.mean = FALSE, mods.eigen = FALSE, david = FALSE,
-                         nThread=2){
+                         mods_mean = FALSE, mods_eigen = FALSE, david = FALSE,
+                         nThread=2,
+                         Rsq.min = NULL, sft.value = NULL,
+                         mods.mean = FALSE, mods.eigen = FALSE){
   SFT.R.sq <- Power <- module <- geneName <- module.char <- NULL
+
+  #Back compatibility
+  if(!is.null(Rsq.min)){Rsq_min <- Rsq.min}
+  if(!is.null(sft.value)){sft_value <- sft.value}
+  if(mods.mean){mods_mean <- mods.mean}
+  if(mods.eigen){mods_eigen <- mods.eigen}
+
   ##### Soft-thresholding #####
   #Select threshold
-  if(!is.null(Rsq.min)){
-    sft.select <- dplyr::filter(fit$sft, SFT.R.sq  >= Rsq.min)
+  if(!is.null(Rsq_min)){
+    sft.select <- dplyr::filter(fit$sft, SFT.R.sq  >= Rsq_min)
     if(nrow(sft.select)>0){
       power.t <- min(sft.select$Power)
     } else {
-      stop("R-squared minimum not reached. Please input lower Rsq.min or set sft.value instead.")
+      stop("R-squared minimum not reached. Please input lower Rsq_min or set sft_value instead.")
     }
-  } else if(!is.null(sft.value)){
-    sft.select <- dplyr::filter(fit$sft, Power == sft.value)
+  } else if(!is.null(sft_value)){
+    sft.select <- dplyr::filter(fit$sft, Power == sft_value)
     power.t <- unique(sft.select$Power)
   } else{
-    stop("Please set Rsq.min or sft.value.")
+    stop("Please set Rsq_min or sft_value.")
   }
 
   ##### Build modules #####
@@ -101,7 +114,7 @@ make_modules <- function(fit,
     ggplot2::geom_vline(xintercept = power.t, color="red")
 
   ##### Mean module expression #####
-  if(mods.mean){
+  if(mods_mean){
     mods.voom <- mods %>%
       #Combine count and module data
       dplyr::select(geneName, module.char) %>%
@@ -119,7 +132,7 @@ make_modules <- function(fit,
   }
 
   ##### Eigenvalue expression #####
-  if(mods.eigen){
+  if(mods_eigen){
     mods.E <- mod.net$MEs %>%
       t() %>% as.data.frame() %>%
       tibble::rownames_to_column("module.char") %>%

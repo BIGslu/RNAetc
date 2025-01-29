@@ -5,30 +5,21 @@
 \title{Filter rare and low abundance genes}
 \usage{
 filter_rare(
-  dat,
-  min.CPM,
-  gene.var = "ensembl_gene_id",
-  min.sample = NULL,
-  min.pct = NULL,
-  plot = FALSE,
-  min_CPM,
-  gene_var = "ensembl_gene_id",
-  min_sample = NULL,
-  min_pct = NULL
+  dat, 
+  min_CPM, 
+  gene_var="ensembl_gene_id",
+  min_sample=NULL, 
+  min_pct=NULL, 
+  plot=FALSE,
+  #Deprecated
+  min.CPM=NULL, 
+  gene.var=NULL,
+  min.sample=NULL, 
+  min.pct=NULL)
 )
 }
 \arguments{
 \item{dat}{DGEList output by edgeR::DEGList( )}
-
-\item{min.CPM}{numeric minimum counts per million (CPM)}
-
-\item{gene.var}{character name for column with gene names in dat$genes that matches names in expression data dat$E. Default "ensembl_gene_id"}
-
-\item{min.sample}{numeric minimum number of samples}
-
-\item{min.pct}{numeric minimum percent of samples (0-100)}
-
-\item{plot}{logical if should plot mean variance trends}
 
 \item{min_CPM}{numeric minimum counts per million (CPM)}
 
@@ -37,6 +28,16 @@ filter_rare(
 \item{min_sample}{numeric minimum number of samples}
 
 \item{min_pct}{numeric minimum percent of samples (0-100)}
+
+\item{plot}{logical if should plot mean variance trends}
+
+\item{min.CPM}{Deprecated form of min_CPM}
+
+\item{gene.var}{Deprecated form of gene_var}
+
+\item{min.sample}{Deprecated form of min_sample}
+
+\item{min.pct}{Deprecated form of min_pct}
 }
 \value{
 DGEList object filtered to not rare genes
@@ -45,8 +46,8 @@ DGEList object filtered to not rare genes
 Filter genes at a minimum counts per million (CPM) in a minmum number or percent of total samples.
 }
 \examples{
-dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.sample = 3,
-                          gene.var="geneName")
-dat.filter <- filter_rare(dat = example.dat, min.CPM = 0.1, min.pct = 10,
-                          plot = TRUE, gene.var="geneName")
+dat.filter <- filter_rare(dat = example.dat, min_CPM = 0.1, min_sample = 3,
+                          gene_var="geneName")
+dat.filter <- filter_rare(dat = example.dat, min_CPM = 0.1, min_pct = 10,
+                          plot = TRUE, gene_var="geneName")
 }

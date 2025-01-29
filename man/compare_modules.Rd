@@ -37,9 +37,10 @@ compare_modules(
 
 \item{nThread}{Integer for number of threads to use}
 
-\item{Rsq.min}{Numeric vector minimum R-squared for soft threshold selection. If set, sft_value is ignored}
+\item{Rsq.min}{Deprecated form of Rsq_min}
 
-\item{sft.value}{Integer vector soft threshold. Set when minimum R-squared is ignored}
+\item{sft.value}{Deprecated form of sft_value}
+
 }
 \value{
 List including:
