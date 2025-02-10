@@ -4,13 +4,13 @@
 #' Test the coherence of modules built from Dataset A in data from Dataset B.
 #'
 #'
-#' @param module_gene_sets Dataframe giving module membership. Should contain columns specifying ensembl gene IDs & module definitions.
-#' @param voom_obj Voom object containing expression dataset in which module coherence is to be tested. Should either me a voom EList with "E" expression matrix, or an expression matrix.
-#' @param gene_set_column Character string specifying name of the column in module_gene_sets df which defines modules. Defaults to "mod.color" which is output by make_modules()
-#' @param ensembl_ID_column Character string specifying name of the column in module_gene_sets df which gives gene IDs. Defaults to "geneName" which is output by make_modules()
-#' @param module_set Character string specifying name the study/dataset from which modules were built. This is used simply for labeling of outputs. Default = "STUDY"
-#' @param sample_set Character string specifying name of the study from which the data come. This is used simply for labeling of outputs. Default = "STUDY"
 #' @param remove_sets Vector of character strings naming modules which you want removed from the analysis, eg. "0" or "Grey".
+#' @param mods Dataframe giving module membership such as output by make_modules. Must include mods_var with module names/IDs and gene_var with gene symbols/IDs
+#' @param mods_title Character string specifying name the study/dataset from which modules were built. This is used simply for labeling of outputs. Default = "STUDY1"
+#' @param mods_var Character string specifying name of the column in mods df which defines modules. Defaults to "module.char" which is output by make_modules()
+#' @param dat limma EList output by voom( ) or dataframe contains expression data (like dat$E) in which module coherence is to be tested.
+#' @param gene_var Character string specifying name of the column in mods df which gives gene IDs. Values must match rownames in expression data (dat). Defaults to "geneName" which is output by make_modules()
+#' @param dat_title Character string specifying name of the study from which the data come. This is used simply for labeling of outputs. Default = "STUDY2"
 #' @param return_plot Logical indicating whether plot should be printed when function runs. Defaults = TRUE.
 #' @param r_cutoff Vector or single numeric value at which to draw red cutoff lines in correlation plot. Default = 0.3
 #' @param p_cutoff Vector or single numeric value at which to draw red cutoff lines in significance plot. Default = 0.01
@@ -26,17 +26,17 @@
 #' @export
 #'
 #' @examples
-#' moduleCoherence <- calculate_module_coherence(module_gene_sets = example.mods,
-#' voom_obj = example.voom, module_set = "Example WGCNA Modules",
-#' sample_set = "Example Data", r_cutoff = 0.3, p_cutoff = 0.01)
+#' moduleCoherence <- calculate_module_coherence(mods = example.mods,
+#' dat = example.voom, mods_title = "Example WGCNA Modules",
+#' dat_title = "Example Data", r_cutoff = 0.3, p_cutoff = 0.01)
 calculate_module_coherence<-
-  function(module_gene_sets,
-           voom_obj,
-           gene_set_column = "mod.color",
-           ensembl_ID_column="geneName",
-           module_set="STUDY",
-           sample_set="STUDY",
            remove_sets = NULL,
+  function(mods,
+           mods_title="STUDY1",
+           mods_var = "module.char",
+           dat,
+           gene_var="geneName",
+           dat_title="STUDY2",
            return_plot=TRUE,
            r_cutoff = 0.3,
            p_cutoff = 0.01){
@@ -45,8 +45,8 @@ calculate_module_coherence<-
     X1 <- X2 <- allCorVals<- allPVals <- V3<- Cor<- P <- Set <- gene1<- gene2<- P.est<- h_label<- h_pos<- negLogP<- value<- h_line<- NULL
 
     # convenience define module definition dataframe and check data formatting
-    moduleSets<- module_gene_sets
-    if(class(voom_obj)[1]== "EList"){voomData<-voom_obj$E}else{voomData<-voom_obj}
+    moduleSets<- mods
+    if(class(dat)[1]== "EList"){voomData<-dat$E}else{voomData<-dat}
     if(!is.numeric(voomData)){
       print("Warning, count/expression matrix is non-numeric.
         This usually arises when a non-expression column has been retained from a metadata object (eg due to grouping).
@@ -58,7 +58,7 @@ calculate_module_coherence<-
     #  [this is currently not used, but may be incorporated later]
     #-----------------------------------------------------------------
     uniGS<-moduleSets%>%
-      dplyr::pull(gene_set_column)%>%
+      dplyr::pull(mods_var)%>%
       unique()%>%as.character()%>%gtools::mixedsort() # Pull unique modules & order correctly
 
     # establish storage
@@ -68,7 +68,7 @@ calculate_module_coherence<-
     # for each geneset pull corresponding gene indices and compute means
     for (i in uniGS){
       curGS<-i
-      curIDs<-as.character(moduleSets[which(moduleSets[, gene_set_column]==curGS), ensembl_ID_column])
+      curIDs<-as.character(moduleSets[which(moduleSets[, mods_var]==curGS), gene_var])
 
       matchIndex<-match(curIDs, rownames(voomData))
       if (any(is.na(matchIndex))){
@@ -100,7 +100,7 @@ calculate_module_coherence<-
 
 
     # remove gene sets that are zero
-    if(!is.null(remove_sets)){uniGS<-uniGS[-which(uniGS %in% remove_sets)]}
+    if(!is.null(remove_mods)){uniGS<-uniGS[-which(uniGS %in% remove_mods)]}
 
     # Setup storage
     SubGeneCorDF<-list()
@@ -110,7 +110,7 @@ calculate_module_coherence<-
     # for each geneset pull the correct gene IDs and indices, calculate correlation matrices, and format results.
     for (i in uniGS){
       curGS<-i
-      curIDs<-as.character(moduleSets[which(moduleSets[, gene_set_column]==curGS), ensembl_ID_column])
+      curIDs<-as.character(moduleSets[which(moduleSets[, mods_var]==curGS), gene_var])
       matchIndex<-match(curIDs, rownames(voomData))
       if (any(is.na(matchIndex))){
         matchIndex<-matchIndex[-which(is.na(matchIndex))]}
@@ -157,8 +157,8 @@ calculate_module_coherence<-
       ggplot2::geom_hline(yintercept = r_cutoff, linetype = "dashed", color = "red")+
       ggplot2::scale_y_continuous(breaks=c(seq(-1,1,0.2), r_cutoff))+
       ggplot2::ylab("Correlation Strength")+
-      ggplot2::xlab(paste0(module_set, " Modules"))+
-      ggplot2::labs(title = paste0(module_set, " Module Coherence in ", sample_set, " Samples"),
+      ggplot2::xlab(paste0(mods_title, " Modules"))+
+      ggplot2::labs(title = paste0(mods_title, " Module Coherence in ", dat_title, " Samples"),
                     subtitle = "Inter-Gene PearsonCorrelation")+
       ggplot2::theme_bw()+
       ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
@@ -182,8 +182,8 @@ calculate_module_coherence<-
       ggplot2::geom_hline(yintercept = -log10(p_cutoff), color="red", linetype="dashed")+
       ggplot2::geom_text(data=labels_df_P, ggplot2::aes(label = h_label, x=3, y=h_pos), color="red")+
       ggplot2::ylab("-log10(Correlation P Value)")+
-      ggplot2::xlab(paste0(module_set, " Modules"))+
-      ggplot2::labs(title = paste0(module_set, " Module Coherence in ", sample_set, " Samples"),
+      ggplot2::xlab(paste0(mods_title, " Modules"))+
+      ggplot2::labs(title = paste0(mods_title, " Module Coherence in ", dat_title, " Samples"),
                     subtitle = "Inter-Gene PearsonCorrelation")+
       ggplot2::theme_bw()+
       ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
@@ -210,8 +210,8 @@ calculate_module_coherence<-
       ggplot2::geom_boxplot(outlier.shape = NA)+
       ggplot2::geom_hline(data=labels_df, ggplot2::aes(yintercept = h_line), color = "red", linetype="dashed")+
       ggplot2::geom_text(data=labels_df, ggplot2::aes(label = h_label, x=3, y=h_pos), color="red")+
-      ggplot2::xlab(paste0(module_set, " Modules"))+
-      ggplot2::labs(title = paste0(module_set, " Module Coherence in ", sample_set, " Samples"),
+      ggplot2::xlab(paste0(mods_title, " Modules"))+
+      ggplot2::labs(title = paste0(mods_title, " Module Coherence in ", dat_title, " Samples"),
                     subtitle = "Inter-Gene PearsonCorrelation")+
       ggplot2::theme_bw()+
       ggplot2::theme(
