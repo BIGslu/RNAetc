@@ -5,16 +5,17 @@
 \title{Filter rare and low abundance genes}
 \usage{
 filter_rare(
-  dat,
-  min_CPM,
-  gene_var = "ensembl_gene_id",
-  min_sample = NULL,
-  min_pct = NULL,
-  plot = FALSE,
-  min.CPM = NULL,
-  gene.var = NULL,
-  min.sample = NULL,
-  min.pct = NULL
+  dat, 
+  min_CPM, 
+  gene_var="ensembl_gene_id",
+  min_sample=NULL, 
+  min_pct=NULL, 
+  plot=FALSE,
+  #Deprecated
+  min.CPM=NULL, 
+  gene.var=NULL,
+  min.sample=NULL, 
+  min.pct=NULL)
 )
 }
 \arguments{

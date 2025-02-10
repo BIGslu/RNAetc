@@ -14,6 +14,7 @@ Imports:
   edgeR, 
   forcats, 
   ggplot2, 
+  gtools,
   limma, 
   magrittr, 
   readr, 
