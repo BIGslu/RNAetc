@@ -40,7 +40,6 @@ compare_modules(
 \item{Rsq.min}{Deprecated form of Rsq_min}
 
 \item{sft.value}{Deprecated form of sft_value}
-
 }
 \value{
 List including:

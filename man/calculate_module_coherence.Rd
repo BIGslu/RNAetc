@@ -5,32 +5,32 @@
 \title{Calculate WGCNA module coherence}
 \usage{
 calculate_module_coherence(
-  module_gene_sets,
-  voom_obj,
-  gene_set_column = "mod.color",
-  ensembl_ID_column = "geneName",
-  module_set = "STUDY",
-  sample_set = "STUDY",
-  remove_sets = NULL,
+  mods,
+  mods_title = "STUDY1",
+  mods_var = "module.char",
+  remove_mods = c(0, "0", "00", "grey"),
+  dat,
+  gene_var = "geneName",
+  dat_title = "STUDY2",
   return_plot = TRUE,
   r_cutoff = 0.3,
   p_cutoff = 0.01
 )
 }
 \arguments{
-\item{module_gene_sets}{Dataframe giving module membership. Should contain columns specifying ensembl gene IDs & module definitions.}
+\item{mods}{Dataframe giving module membership such as output by make_modules. Must include mods_var with module names/IDs and gene_var with gene symbols/IDs}
 
-\item{voom_obj}{Voom object containing expression dataset in which module coherence is to be tested. Should either me a voom EList with "E" expression matrix, or an expression matrix.}
+\item{mods_title}{Character string specifying name the study/dataset from which modules were built. This is used simply for labeling of outputs. Default = "STUDY1"}
 
-\item{gene_set_column}{Character string specifying name of the column in module_gene_sets df which defines modules. Defaults to "mod.color" which is output by make_modules()}
+\item{mods_var}{Character string specifying name of the column in mods df which defines modules. Defaults to "module.char" which is output by make_modules()}
 
-\item{ensembl_ID_column}{Character string specifying name of the column in module_gene_sets df which gives gene IDs. Defaults to "geneName" which is output by make_modules()}
+\item{remove_mods}{Vector of character strings naming modules which you want removed from the analysis. Default includes 0,"0","00","grey"}
 
-\item{module_set}{Character string specifying name the study/dataset from which modules were built. This is used simply for labeling of outputs. Default = "STUDY"}
+\item{dat}{limma EList output by voom( ) or dataframe contains expression data (like dat$E) in which module coherence is to be tested.}
 
-\item{sample_set}{Character string specifying name of the study from which the data come. This is used simply for labeling of outputs. Default = "STUDY"}
+\item{gene_var}{Character string specifying name of the column in mods df which gives gene IDs. Values must match rownames in expression data (dat). Defaults to "geneName" which is output by make_modules()}
 
-\item{remove_sets}{Vector of character strings naming modules which you want removed from the analysis, eg. "0" or "Grey".}
+\item{dat_title}{Character string specifying name of the study from which the data come. This is used simply for labeling of outputs. Default = "STUDY2"}
 
 \item{return_plot}{Logical indicating whether plot should be printed when function runs. Defaults = TRUE.}
 
@@ -53,7 +53,7 @@ Calculate within module pairwise gene correlations from WGCNA modules and gene e
 Test the coherence of modules built from Dataset A in data from Dataset B.
 }
 \examples{
-moduleCoherence <- calculate_module_coherence(module_gene_sets = example.mods,
-voom_obj = example.voom, module_set = "Example WGCNA Modules",
-sample_set = "Example Data", r_cutoff = 0.3, p_cutoff = 0.01)
+moduleCoherence <- calculate_module_coherence(mods = example.mods,
+dat = example.voom, mods_title = "Example WGCNA Modules",
+dat_title = "Example Data", r_cutoff = 0.3, p_cutoff = 0.01)
 }
