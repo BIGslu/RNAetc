@@ -4,10 +4,10 @@
 #' Test the coherence of modules built from Dataset A in data from Dataset B.
 #'
 #'
-#' @param remove_sets Vector of character strings naming modules which you want removed from the analysis, eg. "0" or "Grey".
 #' @param mods Dataframe giving module membership such as output by make_modules. Must include mods_var with module names/IDs and gene_var with gene symbols/IDs
 #' @param mods_title Character string specifying name the study/dataset from which modules were built. This is used simply for labeling of outputs. Default = "STUDY1"
 #' @param mods_var Character string specifying name of the column in mods df which defines modules. Defaults to "module.char" which is output by make_modules()
+#' @param remove_mods Vector of character strings naming modules which you want removed from the analysis. Default includes 0,"0","00","grey"
 #' @param dat limma EList output by voom( ) or dataframe contains expression data (like dat$E) in which module coherence is to be tested.
 #' @param gene_var Character string specifying name of the column in mods df which gives gene IDs. Values must match rownames in expression data (dat). Defaults to "geneName" which is output by make_modules()
 #' @param dat_title Character string specifying name of the study from which the data come. This is used simply for labeling of outputs. Default = "STUDY2"
@@ -30,10 +30,10 @@
 #' dat = example.voom, mods_title = "Example WGCNA Modules",
 #' dat_title = "Example Data", r_cutoff = 0.3, p_cutoff = 0.01)
 calculate_module_coherence<-
-           remove_sets = NULL,
   function(mods,
            mods_title="STUDY1",
            mods_var = "module.char",
+           remove_mods = c(0,"0","00","grey"),
            dat,
            gene_var="geneName",
            dat_title="STUDY2",
