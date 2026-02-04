@@ -83,7 +83,7 @@ subset_voom <- function(dat,
   message(paste0("Subsetting to ",length(libs_sub)," of ",ncol(dat$E)," libraries"))
   message(paste0("Subsetting to ",length(genes_sub)," of ",nrow(dat$E)," genes"))
 
-  dat_voom_sub$targets <- dat_voom_sub$targets[libs_sub,]
+  dat_voom_sub$targets <- dat_voom_sub$targets %>% dplyr::filter({{libraryID}} %in% libs_sub)
   dat_voom_sub$genes <- dat_voom_sub$genes[genes_sub,]
   dat_voom_sub$E <- dat_voom_sub$E[genes_sub,libs_sub]
   if(!is.null(dat$weights)){ dat_voom_sub$weights <- dat_voom_sub$weights[genes_sub,libs_sub] }
